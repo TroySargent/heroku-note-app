@@ -21,7 +21,7 @@ const saveNote = (note) => {
     url: "/api/notes",
     data: note,
     method: "POST",
-  });
+  })
 };
 
 // A function for deleting a note from the db
@@ -35,7 +35,6 @@ const deleteNote = (id) => {
 // If there is an activeNote, display it, otherwise render empty inputs
 const renderActiveNote = () => {
   $saveNoteBtn.hide();
-
   if (activeNote.id) {
     $noteTitle.attr("readonly", true);
     $noteText.attr("readonly", true);
