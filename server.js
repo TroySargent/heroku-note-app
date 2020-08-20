@@ -78,7 +78,7 @@ app.delete('/api/notes/:id', (req, res) => {
 
   res.send(200);
 
-})
+}) 
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
