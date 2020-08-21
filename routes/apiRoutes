@@ -1,11 +1,11 @@
 const router = require("express").Router();
 const fs = require("fs");
-const notes = require("../db/db.json");
+let notes = require("../db/db.json");
 const { v4: uuidv4 } = require('uuid');
 
 router.get('/api/notes', (req, res) => {
     res.send(notes);
-})
+});
 
 router.post('/api/notes', (req, res) => {
     let newNote = req.body;
@@ -21,26 +21,19 @@ router.post('/api/notes', (req, res) => {
     });
 
     res.sendStatus(201);
-
 });
 
 router.delete('/api/notes/:id', (req, res) => {
     let { id } = req.params;
-    for (let i = 0; i < notes.length; i++) {
-        currentNoteId = notes[i].id;
-        if (notes[i].id === id) {
-            let index = notes.indexOf(notes[i]);
-            notes.splice(index, 1); //remove deleted note
-        };
-    };
+    notes = notes.filter(note => note.id !== id); //return array without deleted note
 
     fs.writeFile("./db/db.json", JSON.stringify(notes), (err) => {
         if (err) {
             throw err;
         };
     });
-
     res.sendStatus(200);
+
 
 })
 
