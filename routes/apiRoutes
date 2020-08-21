@@ -1,0 +1,63 @@
+const router = require("express").Router();
+const fs = require("fs");
+const db = require("../db/db.json");
+const {
+    resolve
+} = require("path");
+const { compile } = require("morgan");
+
+router.get('/api/notes', (req, res) => {
+    res.send(db);
+})
+
+router.post('/api/notes', (req, res) => {
+    let newNote = req.body;
+
+    //read existing notes and append new one
+    let notes = db;
+    id = notes.length + 1;
+    newNote.id = id;
+    notes.push(newNote);
+
+
+    fs.writeFile("./db/db.json", JSON.stringify(notes), (err) => {
+        if (err) {
+            throw err;
+        };
+    });
+
+    res.sendStatus(201);
+
+});
+
+router.delete('/api/notes/:id', (req, res) => {
+    let {
+        id
+    } = req.params;
+
+    console.log(id)
+
+    let notes = db;
+
+    for (let i = 0; i < notes.length; i++) {
+        currentNoteId = notes[i].id;
+        if (notes[i].id === parseInt(id)) {
+            console.log(currentNoteId)
+            console.log(notes[i])
+            let index = notes.indexOf(notes[i]);
+            notes.splice(index, 1); //remove deleted note
+        };
+    };
+
+
+    fs.writeFile("./db/db.json", JSON.stringify(notes), (err) => {
+        if (err) {
+            throw err;
+        };
+    });
+
+    res.sendStatus(200);
+
+})
+
+module.exports = router;
